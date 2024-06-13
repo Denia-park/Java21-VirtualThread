@@ -15,20 +15,20 @@ public class Pinning {
 	private final Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
+			log.info("1) run. thread: " + Thread.currentThread());
 
-			synchronized (this) {
-				log.info("1) run. thread: " + Thread.currentThread());
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-				log.info("2) run. thread: " + Thread.currentThread());
+			lock.lock();
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			} finally {
+				lock.unlock();
 			}
 
+			log.info("2) run. thread: " + Thread.currentThread());
 		}
 	};
-
 
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
@@ -37,7 +37,7 @@ public class Pinning {
 		//        platform();
 		virtual();
 
-		log.info("2) main. time: " + (System.currentTimeMillis()-startTime) + " , thread: " + Thread.currentThread());
+		log.info("2) main. time: " + (System.currentTimeMillis() - startTime) + " , thread: " + Thread.currentThread());
 	}
 
 	private static void virtual() {

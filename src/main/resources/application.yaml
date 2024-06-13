@@ -8,8 +8,10 @@ spring:
   task:
     scheduling:
       thread-name-prefix: mySch-
+      shutdown:
+        await-termination: true
 #  task:
-#    execution:
+#    execution: <-- @Async Task
 #      thread-name-prefix: myTask-
 #    scheduling:
 #      thread-name-prefix: myScheduler-
